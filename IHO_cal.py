@@ -1,10 +1,13 @@
 #/usr/bin/env python
 
-# -*- coding: utf-8 -*-
 """
 Created on Wed Mar 25 15:57:01 2015
 
 @author: Efrem
+
+1/27/2016 this is a continuation of the IHO space an utilization analysis
+project that was first done in March 2015.
+
 """
 
 import pandas as pd
@@ -33,7 +36,7 @@ date_format = '%m-%d-%y  %I:%M %p'
 
 
 def parse_calendar(infile, outfile, start_date='', end_date='', calendar=''):
-    print('Parsing Calendar file "%s"...') % infile
+    print("Parsing Calendar file {}...".format(infile))
     df = pd.read_csv(infile)
 
     df['Start'] = pd.to_datetime(df['Start'])
@@ -48,8 +51,10 @@ def parse_calendar(infile, outfile, start_date='', end_date='', calendar=''):
     if calendar:
         df = df[df['Calendar'] == calendar]
 
-    dd = (df['End'] - df['Start']).dt
-    df['Duration'] = 24 * dd.days + dd.hours + dd.minutes / 60.0
+    # dd = (df['End'] - df['Start']).dt
+    # df['Duration'] = 24 * dd.days + dd.hours + dd.minutes / 60.0
+    dd = df['End'] - df['Start']
+    df['Duration'] = dd / pd.np.timedelta64(1,'h')
 
     # drop all duplicates of Title, Start and End field
     df = df.drop_duplicates(subset=['Title', 'Start', 'End'])
@@ -106,7 +111,7 @@ def parse_calendar(infile, outfile, start_date='', end_date='', calendar=''):
     for sup_label in labels.keys():
         print('***** ' + sup_label + ' *****')
         for label in labels[sup_label]:
-            print('Title/Where text containing %s:') % label
+            print('Title/Where text containing {}:'.format(label))
             text_contains_label = text.str.contains(
                 label, case=False, na=False)
             if sup_label in df.columns:
@@ -143,7 +148,7 @@ def parse_calendar(infile, outfile, start_date='', end_date='', calendar=''):
     for idx in df[good].index:
         guessed_label = estimates[idx][0]
         df.loc[idx, guessed_label] = True
-        print('"%s" contains %s') % (text[idx], guessed_label)
+        print('"{}" contains {}'.format(text[idx], guessed_label))
 
     # Change data format from wide to long
     room_labels = floor_space + conf_rooms + other_space
@@ -167,7 +172,7 @@ def parse_calendar(infile, outfile, start_date='', end_date='', calendar=''):
 
     if outfile:
         df2.to_csv(outfile, ignore_index=True)
-        print('...Wrote "%s"') % outfile
+        print('...Wrote "{}"'.format(outfile))
 
     return df2
 
@@ -203,7 +208,7 @@ def fuzzycompare(s1, s2, thresh=False):
 
 # ****************************************************************************
 # """
-parse_calendar('HUB_cal_All.csv', 'classified_loc.csv',
+parse_calendar('IHO_cal_All.csv', 'classified_loc.csv',
                start_date='2/2014',
                calendar='Conference Room')
 
