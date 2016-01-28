@@ -11,10 +11,7 @@ project that was first done in March 2015.
 """
 
 import pandas as pd
-import matplotlib.pyplot as plt
-from fuzzywuzzy import fuzz
 from fuzzywuzzy import process
-import re
 
 """
   We assume that initial data is in the form of a CSV file output by something
@@ -35,7 +32,7 @@ status = ['HOLD', 'CLOSED']
 date_format = '%m-%d-%y  %I:%M %p'
 
 
-def parse_calendar(infile, outfile=False,
+def parse_calendar(infile,
                    start_date='', end_date='',
                    calendars=[]):
 
@@ -178,12 +175,6 @@ def parse_calendar(infile, outfile=False,
     df2['Status'] = df2['Status'].astype("category")
     df2['Calendar'] = df2['Calendar'].astype("category")
 
-    if outfile:
-        fields = ["Loc", "Duration", "dtime", "Status", "Calendar", "Title",
-                  "Description", "Where", "Created by"]
-        df2[fields].to_csv(outfile)
-        print('...Wrote "{}"'.format(outfile))
-
     return df2
 
 
@@ -201,21 +192,23 @@ def import_parsed_csv(filename):
 
 # ****************************************************************************
 def main():
-    # df = parse_calendar("IHO_cal_All.csv", "classified_2015.csv",
-    #                     start_date="1/1/2015",
-    #                     end_date="12/31/2015",
-    #                     calendars=["Conference Room"])
 
     # Write everything to one Excel file
-    writer = pd.ExcelWriter('IHO_space_utilization.xlsx')
+    writer = pd.ExcelWriter('IHO_space_util.xlsx')
 
     df = parse_calendar("IHO_cal_All.csv",
-                        outfile="classified_2015.csv",
                         start_date="1/1/2015",
                         end_date="12/31/2015")
 
-    df.to_excel(writer, 'All', float_format='%5.2f')
+    fields = ["Loc", "Duration", "dtime", "Status", "Calendar", "Title",
+              "Description", "Where", "Created by"]
+
+    df[fields].to_excel(writer, 'All', float_format='%5.2f')
     writer.save()
+
+    # These are the data fields safe to post publicly
+    safe_fields = ["Loc", "Duration", "dtime", "Status", "Calendar"]
+    df[safe_fields].to_csv("IHO_space_util_2015.csv")
 
 
 if __name__ == "__main__":
