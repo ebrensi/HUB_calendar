@@ -17,3 +17,9 @@ This repository contains the scripts for parsing room booking info from the Oakl
   5. Compute percentage of capacity for each room
   6. Present the findings in an Excel doc
 
+
+### Questions
+Aside from percentage capacity we might want to know:
+  * How do results compare with 2014?
+  * What is the minimum space utilization that sustains IHO financially?
+
