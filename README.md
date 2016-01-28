@@ -1,4 +1,19 @@
-# HUB_calendar
-This repository contains the script for parsing room booking info from the Oakland Impact Hub's Events calendar, and calculating some values from the data.   First we parse the raw text from Google calendar fields and classify it by room and renter, income generated, etc.
+## 2015 IHO Space Utilization Analysis via Google Calendar Events records
+This repository contains the scripts for parsing room booking info from the Oakland Impact Hub's Events calendar and determining how close we are to optimal space utilization.
 
-Note this project is mostly replaced by the HUB invoice analysis project.
+### Workflow
+  1. parse the text from Google calendar with [gcal2excel](https://www.gcal2excel.com) fields and classify it by room and renter, income generated, etc.
+  2. Determine hours booked and count of number of rentals over the year 2015 for each rentable space in categories:
+    1. `conf_rooms = ['UPTOWN', 'DOWNTOWN', 'EAST_OAK', 'WEST_OAK', 'MERIDIAN']`
+    2. `floor_space = ['BROADWAY', 'GALLERY', 'ATRIUM', 'JINGLETOWN', 'ENTIRE']`
+  3. Classify space usage events as
+    * Day rental: Events beginning 8:00 - 17:30
+    * Evening rental: "         " 17:30 - 24:00
+  4. Determine rental capacity of IHO:
+    *  9.5 day hours and 6.5 evening hours comprises one rental day
+    * According to
+        [http://www.workingdays.us/workingdays_holidays_2015.htm]
+      there were 251 work days and 105 weekend days in 2015.
+  5. Compute percentage of capacity for each room
+  6. Present the findings in an Excel doc
+
