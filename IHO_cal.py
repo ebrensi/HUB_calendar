@@ -60,8 +60,17 @@ def parse_calendar(infile, outfile=False,
     # drop all duplicates of Title, Start and End field
     df = df.drop_duplicates(subset=['Title', 'Start', 'End'])
 
+    # Set the index to Start datetime and sort by that
+    df = df.set_index('Start').sort_index()
+
+    daytime = ((df.index.hour < 17) |
+               ((df.index.hour == 17) & (df.index.minute < 30)))
+
+    df.loc[daytime, "dtime"] = "DAY"
+    df.loc[~daytime, "dtime"] = "EVENING"
+
     # sort by start datetime and reindex
-    df = df.sort('Start').reset_index(drop=True)
+    # df = df.sort('Start').reset_index(drop=True)
 
     # get rid of extraneous blank lines in Description
     df.Description = df.Description.str.replace('[\r\n]+', '\n')
@@ -72,7 +81,8 @@ def parse_calendar(infile, outfile=False,
     #  hub calendar in the 'Title' field.  First we try to match them exactly
     labels = {'GALLERY': ['OMI', 'GALLERY'],
               'ATRIUM': ['ATRIUM'],
-              'BROADWAY': ['BROADWAY', 'MAIN STAGE', 'MAIN FLOOR', 'MAIN SPACE'],
+              'BROADWAY': ['BROADWAY', 'MAIN STAGE',
+                           'MAIN FLOOR', 'MAIN SPACE'],
               'JINGLETOWN': ['JINGLETOWN'],
               'MERIDIAN': ['MERIDIAN', 'meri?di?an(?! university)'],
               'DOWNTOWN': ['DOWNTOWN'],
@@ -132,8 +142,6 @@ def parse_calendar(infile, outfile=False,
     Description_contains_cancelled = (df.Description
                                       .str
                                       .contains('cancel',
-
-
                                                 na=False, case=False))
 
     df['CLOSED'] = df['CLOSED'] | Description_contains_cancelled
@@ -171,9 +179,9 @@ def parse_calendar(infile, outfile=False,
     df2['Calendar'] = df2['Calendar'].astype("category")
 
     if outfile:
-        fields = ["Title", "Where", "Loc", "Status", "Start", "End", "Duration",
-                  "Created by", "Description", "Calendar"]
-        df2[fields].to_csv(outfile, ignore_index=True)
+        fields = ["Loc", "Duration", "dtime", "Status", "Calendar", "Title",
+                  "Description", "Where", "Created by"]
+        df2[fields].to_csv(outfile)
         print('...Wrote "{}"'.format(outfile))
 
     return df2
@@ -202,6 +210,7 @@ def main():
     writer = pd.ExcelWriter('IHO_space_utilization.xlsx')
 
     df = parse_calendar("IHO_cal_All.csv",
+                        outfile="classified_2015.csv",
                         start_date="1/1/2015",
                         end_date="12/31/2015")
 
