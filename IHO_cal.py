@@ -35,7 +35,10 @@ status = ['HOLD', 'CLOSED']
 date_format = '%m-%d-%y  %I:%M %p'
 
 
-def parse_calendar(infile, outfile, start_date='', end_date='', calendars=[]):
+def parse_calendar(infile, outfile=False,
+                   start_date='', end_date='',
+                   calendars=[]):
+
     print("Parsing Calendar file {}...".format(infile))
     df = pd.read_csv(infile)
 
@@ -195,10 +198,15 @@ def main():
     #                     end_date="12/31/2015",
     #                     calendars=["Conference Room"])
 
+    # Write everything to one Excel file
+    writer = pd.ExcelWriter('IHO_space_utilization.xlsx')
+
     df = parse_calendar("IHO_cal_All.csv",
                         start_date="1/1/2015",
-                        end_date="12/31/2015",
-                        calendars=["Conference Room"])
+                        end_date="12/31/2015")
+
+    df.to_excel(writer, 'All', float_format='%5.2f')
+    writer.save()
 
 
 if __name__ == "__main__":
