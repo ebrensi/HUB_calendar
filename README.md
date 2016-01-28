@@ -1,4 +1,4 @@
-## 2015 IHO Space Utilization Analysis via Google Calendar Events records
+## 2015 IHO Space Utilization Analysis via calendar records
 This repository contains the scripts for parsing room booking info from the Oakland Impact Hub's Events calendar and determining how close we are to optimal space utilization.
 
 ### Workflow
