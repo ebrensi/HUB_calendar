@@ -2,7 +2,7 @@
 This repository contains the scripts for parsing room booking info from the Oakland Impact Hub's Events calendar and determining how close we are to optimal space utilization.
 
 ### Workflow
-  1. Parse the text from IHO Google calendar into a CSV file.
+  1. Parse the text from IHO Google Calendars into a CSV file.
     * used [gcal2excel](https://www.gcal2excel.com)
   2. Determine hours booked and count of number of rentals over the year 2015 for each rentable space in categories:
     1. `conf_rooms = ['UPTOWN', 'DOWNTOWN', 'EAST_OAK', 'WEST_OAK', 'MERIDIAN']`
