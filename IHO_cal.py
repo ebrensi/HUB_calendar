@@ -182,6 +182,7 @@ def import_parsed_csv(filename):
     df[Event_Location_Label] = df[Event_Location_Label].astype("category")
     if 'Status' in df.columns:
         df['Status'] = df['Status'].astype("category")
+
     if 'Calendar' in df.columns:
         df['Calendar'] = df['Calendar'].astype("category")
     return df
@@ -189,10 +190,16 @@ def import_parsed_csv(filename):
 
 # ****************************************************************************
 def main():
-    df = parse_calendar("IHO_cal_All.csv", "classified_2015.csv",
+    # df = parse_calendar("IHO_cal_All.csv", "classified_2015.csv",
+    #                     start_date="1/1/2015",
+    #                     end_date="12/31/2015",
+    #                     calendars=["Conference Room"])
+
+    df = parse_calendar("IHO_cal_All.csv",
                         start_date="1/1/2015",
                         end_date="12/31/2015",
                         calendars=["Conference Room"])
+
 
 if __name__ == "__main__":
     main()
