@@ -66,6 +66,10 @@ def parse_calendar(infile,
     df.loc[daytime, "dtime"] = "DAY"
     df.loc[~daytime, "dtime"] = "EVENING"
 
+    weekday = df.index.weekday < 5
+    df.loc[weekday, 'day_type'] = "WEEKDAY"
+    df.loc[~weekday, 'day_type'] = "WEEKEND"
+
     # sort by start datetime and reindex
     # df = df.sort('Start').reset_index(drop=True)
 
@@ -200,14 +204,15 @@ def main():
                         start_date="1/1/2015",
                         end_date="12/31/2015")
 
-    fields = ["Loc", "Duration", "dtime", "Status", "Calendar", "Title",
-              "Description", "Where", "Created by"]
+    fields = ["Loc", "Duration", "dtime", "day_type", "Status", "Calendar",
+              "Title", "Description", "Where", "Created by"]
 
     df[fields].to_excel(writer, 'All', float_format='%5.2f')
     writer.save()
 
     # These are the data fields safe to post publicly
-    safe_fields = ["Loc", "Duration", "dtime", "Status", "Calendar"]
+    safe_fields = ["Loc", "Duration", "dtime",
+                   "day_type", "Status", "Calendar"]
     df[safe_fields].to_csv("IHO_space_util_2015.csv")
 
 
