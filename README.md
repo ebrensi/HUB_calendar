@@ -17,7 +17,7 @@ This repository contains the scripts for parsing room booking info from Oakland 
 
 
 ### Data
-The original data is in two Google calendars used by IHO.  We grabbed those fields and put them in a CSV file.  Time information is already standardized but event description and location are human written into a general "Description" text field.  [`IHO_cal.py`](IHO_cal.py) parses the text from that CSV and catgorizes calendar entries.  The relevant data are contained in [`IHO_space_util_2015.csv`](IHO_space_util_2015.csv). Note that if multiple rooms are specified in a calendar entry, each room has a separate row in `IHO_space_util_2015.csv`.
+The original data are in two Google calendars used by IHO.  We grabbed those fields and put them in a CSV file.  Time information is already standardized but event description and location are human written into a general "Description" text field.  [`IHO_cal.py`](IHO_cal.py) parses the text from that CSV and catgorizes calendar entries.  The relevant data are contained in [`IHO_space_util_2015.csv`](IHO_space_util_2015.csv). Note that if multiple rooms are specified in a calendar entry, each room has a separate row in `IHO_space_util_2015.csv`.
 
 
 ### Questions
