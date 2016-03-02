@@ -74,6 +74,21 @@
 
 <p>The original data is in two Google calendars used by IHO.  We grabbed those fields and put them in a CSV file.  Time information is already standardized but event description and location are human written into a general "Description" text field.  <a href="IHO_cal.py"><code>IHO_cal.py</code></a> parses the text from that CSV and catgorizes calendar entries.  The relevant data are contained in <a href="IHO_space_util_2015.csv"><code>IHO_space_util_2015.csv</code></a>. Note that if multiple rooms are specified in a calendar entry, each room has a separate row in <code>IHO_space_util_2015.csv</code>.</p>
 
+<script type="text/javascript">
+  // This example loads the "Canadian Parliament 2012" 
+  // dataset from a CSV instead of from JSON.
+
+  $(function(){
+      $.get("https://raw.githubusercontent.com/ebrensi/IHO_calendar/master/IHO_space_util_2015.csv", function(mps) {
+        var input = $.csv.toArrays(mps);
+        $("#output").pivotUI(input, {
+            rows: ["Province"], cols: ["Party"]
+        });
+    });
+  });
+</script>
+
+
 <h3>
 <a id="questions" class="anchor" href="#questions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Questions</h3>
 
