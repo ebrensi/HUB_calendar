@@ -23,101 +23,48 @@
   </head>
   
   <body>
-    <section class="page-header">
-      <h1 class="project-name">IHO calendar</h1>
-      <h2 class="project-tagline">IHO space utilization study</h2>
-      <a href="https://github.com/ebrensi/IHO_calendar" class="btn">View on GitHub</a>
-      <a href="https://github.com/ebrensi/IHO_calendar/zipball/master" class="btn">Download .zip</a>
-      <a href="https://github.com/ebrensi/IHO_calendar/tarball/master" class="btn">Download .tar.gz</a>
-    </section>
-
-    <section class="main-content">
-      <h2>
-        
-<a id="2015-iho-space-utilization-analysis-via-calendar-records" class="anchor" href="#2015-iho-space-utilization-analysis-via-calendar-records" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2015 IHO Space Utilization Analysis via calendar records</h2>
-
-<p>This repository contains the scripts for parsing room booking info from Oakland Impact Hub's events calendar and determining how close we are to optimal space utilization.</p>
-
-<h3>
-<a id="workflow" class="anchor" href="#workflow" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Workflow</h3>
-
-<ol>
-<li>Parse the text from IHO Google Calendars into a CSV file with <a href="https://www.gcal2excel.com">gcal2excel</a>
-</li>
-<li>Determine hours booked and count of number of rentals over the year 2015 for each rentable space in categories:
-
-<ol>
-<li><code>conf_rooms = ['UPTOWN', 'DOWNTOWN', 'EAST_OAK', 'WEST_OAK', 'MERIDIAN']</code></li>
-<li><code>floor_space = ['BROADWAY', 'GALLERY', 'ATRIUM', 'JINGLETOWN', 'ENTIRE']</code></li>
-</ol>
-</li>
-<li>Classify each space usage event as
-
-<ul>
-<li>
-<code>DAY</code>: Events beginning 8:00 - 17:30</li>
-<li>
-<code>EVENING</code>: "         " 17:30 - 24:00</li>
-</ul>
-</li>
-<li>Determine rental capacity of IHO:
-
-<ul>
-<li> 9.5 day hours and 6.5 evening hours comprises one rental day</li>
-<li>251 work days and 105 weekend days in 2015, according to <a href="http://www.workingdays.us/workingdays_holidays_2015.htm">http://www.workingdays.us/workingdays_holidays_2015.htm</a>
-</li>
-</ul>
-</li>
-<li>Compute percentage of capacity for each room</li>
-<li>Present the findings in an Excel doc</li>
-</ol>
-
-<h3>
-<a id="data" class="anchor" href="#data" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Data</h3>
-
-<p>The original data is in two Google calendars used by IHO.  We grabbed those fields and put them in a CSV file.  Time information is already standardized but event description and location are human written into a general "Description" text field.  <a href="IHO_cal.py"><code>IHO_cal.py</code></a> parses the text from that CSV and catgorizes calendar entries.  The relevant data are contained in <a href="IHO_space_util_2015.csv"><code>IHO_space_util_2015.csv</code></a>. Note that if multiple rooms are specified in a calendar entry, each room has a separate row in <code>IHO_space_util_2015.csv</code>.</p>
-
-<script type="text/javascript">
-  $(function(){
-      $("#csv").bind("change", function(event){
-          var reader = new FileReader();
-          reader.onload = function(theFile) { 
-              try {
-                  var input = $.csv.toArrays(theFile.target.result);
-
-              }
-              catch(e) { 
-                  alert("CSV Parse error.");
-                  return; 
-              }
-
-              var renderers = $.extend(
-                  $.pivotUtilities.renderers, 
-                  $.pivotUtilities.c3_renderers, 
-                  $.pivotUtilities.d3_renderers,
-                  $.pivotUtilities.export_renderers
-                  );
-
-              $("#output").pivotUI( input, { renderers: renderers }, true);
-          };
-          reader.readAsText(event.target.files[0]);
-      });  
-   });
-  </script>
-  <p><a href="index.html">&laquo; back to examples</a></p>
-  <p align="center">Select a CSV file: <input id="csv" type="file" /></p>
-  <div id="output" style="margin: 10px;"></div>
-
-
-<h3>
-<a id="questions" class="anchor" href="#questions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Questions</h3>
-
-<p>Aside from percentage capacity we might want to know:</p>
-
-<ul>
-<li>How do results compare with 2014?</li>
-<li>What is the minimum space utilization that sustains IHO financially?</li>
-</ul>
+      
+  <script type="text/javascript">
+    $(function(){
+        $("#csv").bind("change", function(event){
+            var reader = new FileReader();
+            reader.onload = function(theFile) { 
+                try {
+                    var input = $.csv.toArrays(theFile.target.result);
+  
+                }
+                catch(e) { 
+                    alert("CSV Parse error.");
+                    return; 
+                }
+  
+                var renderers = $.extend(
+                    $.pivotUtilities.renderers, 
+                    $.pivotUtilities.c3_renderers, 
+                    $.pivotUtilities.d3_renderers,
+                    $.pivotUtilities.export_renderers
+                    );
+  
+                $("#output").pivotUI( input, { renderers: renderers }, true);
+            };
+            reader.readAsText(event.target.files[0]);
+        });  
+     });
+    </script>
+    <p><a href="index.html">&laquo; back to examples</a></p>
+    <p align="center">Select a CSV file: <input id="csv" type="file" /></p>
+    <div id="output" style="margin: 10px;"></div>
+  
+  
+  <h3>
+  <a id="questions" class="anchor" href="#questions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Questions</h3>
+  
+  <p>Aside from percentage capacity we might want to know:</p>
+  
+  <ul>
+  <li>How do results compare with 2014?</li>
+  <li>What is the minimum space utilization that sustains IHO financially?</li>
+  </ul>
 
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/ebrensi/IHO_calendar">IHO calendar</a> is maintained by <a href="https://github.com/ebrensi">ebrensi</a>.</span>
