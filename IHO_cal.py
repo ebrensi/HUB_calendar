@@ -15,7 +15,8 @@ from fuzzywuzzy import process
 
 """
   We assume that initial data is in the form of a CSV file output by something
-  like gcal2excel, with fields 'Title', 'Start', 'End', 'Where', and 'Calendar'
+  like gcal2excel, with fields 'Title', 'Start', 'End', 'Description',
+   'Where', and 'Calendar'
 """
 
 # 3/10/2014 is the date that Hub staff started using consistent
@@ -200,7 +201,7 @@ def main():
     # Write everything to one Excel file
     writer = pd.ExcelWriter('IHO_space_util.xlsx')
 
-    df = parse_calendar("IHO_cal_All.csv",
+    df = parse_calendar("IHO_cal.csv",
                         start_date="1/1/2015",
                         end_date="12/31/2015")
 

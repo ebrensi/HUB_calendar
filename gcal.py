@@ -73,9 +73,12 @@ def main():
                 if cal["summary"] in CALENDARS}
 
     with open("IHO_cal.csv", "w") as outfile:
-        fieldnames = ["Calendar", "Start", "End", "title",
-                      "description", "location"]
+        items = {}
+        fieldnames = ["Calendar", "Start", "End", "Title",
+                      "Description", "Where", "Created by"]
         writer = csv.DictWriter(outfile, fieldnames=fieldnames)
+        writer.writeheader()
+
         for id in hub_cals:
             page = 0
             print("\nRetrieving events from {}".format(hub_cals[id]))
@@ -94,18 +97,19 @@ def main():
                 page += 1
                 print("{} results page {}:".format(hub_cals[id], page))
                 for event in events:
-                    item = {"calendar": hub_cals[id],
-                            "title": event.get("summary"),
-                            "description": event.get("description"),
-                            "location": event.get("location"),
-                            "start": (event['start']
+                    item = {"Calendar": hub_cals[id],
+                            "Title": event.get("summary"),
+                            "Description": event.get("description"),
+                            "Where": event.get("location"),
+                            "Start": (event['start']
                                       .get('dateTime', event['start'].get('date'))),
-                            "end": (event['end']
+                            "End": (event['end']
                                     .get('dateTime', event['end'].get('date'))),
+                            "Created by": event["organizer"].get("displayName")
                             }
-
+                    items[id] = item
                     writer.writerow(item)
-                    print(item["start"], event.setdefault('summary', ""))
+                    print(item["Start"], event.setdefault('summary', ""))
 
                 page_token = eventsResult.get('nextPageToken')
 
